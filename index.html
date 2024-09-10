@@ -10,7 +10,198 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to My CS180 Portfolio!</h1>
-    <a href="./1/index.html">Project 1</a>
+    <h1>Project 1</h1>
+    <p>
+    Russian photographer Prokudin-Gorskii created colored photographs with
+    RGB filters to create three color channel images. In this project, we'll try to put these three together to
+    reproduce a fully colored image. Here is one such set of images:
+    </p>
+
+    <img src="media/cathedral.jpg" width="200" height="600" alt="Cathedral">
+    <figcaption>Cathedral</figcaption>
+
+    <p>
+    Some of the challenges are to align the images automatically in order to produce a coherent photo.
+    The metric that I used to align the images was Euclidean Distance. I computed the difference of the images' flattened vectors
+    and its L2 norm, assigning a higher similarity score to lower values. For the smaller photos, I did an exhaustive
+    search over a space of displacements, from (x, y) = [-15, -15] pixels to [15, 15] pixels. These are the results I
+    achieved for the smaller images. I also trimmed out the borders from the images.
+    </p>
+    <table>
+        <tr>
+            <td>
+    <img src="media/cathedral_full.jpg" alt="Cathedral Full">
+    <figcaption>Cathedral, Offset={r: [5, 2], g: [12, 3]}</figcaption>
+</td>
+<td>
+    <img src="media/monastery_full.jpg" alt="Monastery Full">
+    <figcaption>Monastery, Offset={r: [-3, 2], g: [3, 2]}</figcaption>
+</td>
+<td>
+    <img src="media/tobolsk_full.jpg" alt="Tobolsk Full">
+    <figcaption>Tobolsk, Offset={r: [3, 3], g: [6, 3]}</figcaption>
+</td>
+    </tr>
+    </table>
+
+    <p>
+    However, for larger images, offsets may be way farther than 15 pixels, so the result will be of poor quality.
+    It also becomes computationally infeasible
+    to brute-force a search in a correspondingly larger space due to the increased size of the image. The way
+    this can be solved is by doing an image pyramid.
+    </p>
+
+    <p>
+        Partial bells and whistles: If you just run the above algorithm with raw pixel values on Emir, you'll get this:
+        </p>
+            
+        <img src="media/emir_full_bad.jpg" width="300" height="300" alt="Emir Bad">
+        <figcaption>Bad Emir, Offset={r: [49, 24], g: [93, -635]}</figcaption>
+    
+        <p>
+        A better metric is to use vertical edge detection with a convolution operator. I used the Sobel filter (Source: Ed)
+        to emphasize vertical edges present in the image. Here's a better one below.
+    </p>
+<table>
+    <tr>
+        <td>
+    <img src="media/emir.jpg" width="300" height="300" alt="Emir">
+    <figcaption>Emir, Offset={r: [49, 24], g: [105, 41]}</figcaption>
+        </td>
+        <td>
+    <img src="media/church.jpg" width="300" height="300" alt="Church Full">
+    <figcaption>Church, Offset={r: [25, 3], g: [58, -5]}</figcaption>
+    </td>
+    <td>
+    <img src="media/harvesters.jpg"  width="300" height="300" alt="Harvesters">
+    <figcaption>Harvesters, Offset={r: [60, 16], g: [123, 13]}</figcaption>
+    </td>
+</tr>
+<tr>
+    <td>
+    <img src="media/icon.jpg" width="300" height="300" alt="Icon">
+    <figcaption>Icon, Offset={r: [40, 16], g: [89, 23]}</figcaption>
+    </td>
+    <td>
+    <img src="media/lady.jpg" width="300" height="300" alt="Lady">
+    <figcaption>Lady, Offset={r: [57, 8], g: [120, 12]}</figcaption>
+    </td>
+    <td>
+    <img src="media/melons.jpg" width="300" height="300" alt="Melons">
+    <figcaption>Melons, Offset={r: [81, 10], g: [178, 13]}</figcaption>
+    </td>
+</tr>
+<tr>
+    <td>
+    <img src="media/onion_church.jpg"  width="300" height="300" alt="onion_church">
+    <figcaption>Onion church, Offset={r: [52, 23], g: [108, 36]}</figcaption>
+</td>
+<td>
+    <img src="media/sculpture.jpg"  width="300" height="300" alt="sculpture">
+    <figcaption>Sculpture, Offset={r: [33, -11], g: [140, -27]}</figcaption>  
+</td>
+<td>
+    <img src="media/self_portrait.jpg" width="300" height="300" alt="self_portrait">
+    <figcaption>Self portrait, Offset={r: [78, 29], g: [176, 37]}</figcaption>     
+</td>
+</tr>
+<tr>
+    <td>
+    <img src="media/three_generations.jpg" width="300" height="300" alt="three_generations">
+    <figcaption>Three generations, Offset={r: [55, 12], g: [113, 11]}</figcaption>   
+</td>
+<td>
+    <img src="media/train.jpg"  width="300" height="300" alt="train">
+    <figcaption>Train, Offset={r: [41, -1], g: [85, 29]}</figcaption>    
+</td>
+</tr>
+</table>
+
+    <p>
+    Some more examples from the Prokudin-Gorskii collection:
+    </p>
+    <table>
+        <tr>
+            <td>
+    <img src="media/master-pnp-prok-00100-00166u.jpg" width="300" height="300" alt="House">
+    <figcaption>Extended example 1, Offset={r: [26, 18], g: [122, 34]}</figcaption> 
+</td>
+<td>
+    <img src="media/master-pnp-prok-00200-00277u.jpg" width="300" height="300" alt="Shed">
+    <figcaption>Extended example 2, Offset={r: [36, -7], g: [122, -17]}</figcaption> 
+</td>
+<td>
+    <img src="media/master-pnp-prok-00300-00317u.jpg" width="300" height="300" alt="Lake">
+    <figcaption>Extended example 3, Offset={r: [30, -7], g: [111, -14]}</figcaption> 
+</td>
+</tr>
+</table>
+
+    <p>
+        Additional bells and whistles:
+        Here's an automatic contrasting that was performed. I opted for the Gamma correction technique instead
+        of a linear transformation, due to the fact that our perception of light is different from camera lenses.
+        In particular, images appeared to de-emphasize the darker tones. I corrected this with a positive gamma value
+        across all images. Here are some results:
+    </p>
+<table>
+    <tr>
+        <td>
+            <img src="media/harvesters.jpg"  width="300" height="300" alt="Harvesters">
+            <figcaption>Harvesters original</figcaption>
+            </td>
+        <td>
+    <img src="media/harvesters_full.jpg" width="300" height="300" alt="Harvesters">
+    <figcaption>Harvesters contrast</figcaption> 
+</td>
+</tr>
+<tr>
+<td>
+    <img src="media/master-pnp-prok-00300-00317u.jpg" width="300" height="300" alt="Lake">
+    <figcaption>Extended example 3 original</figcaption> 
+</td>
+<td>
+    <img src="media/master-pnp-prok-00300-00317u_full.jpg" width="300" height="300" alt="Lake">
+    <figcaption>Extended example 3 contrast</figcaption>
+</td> 
+
+</tr>
+</table>
+
+    <p>
+        As you can see, it noticeably improves the quality of certain images. Harvesters does not have the unsightly glare.
+        Also, for the second image, you can observe more details on the surface of the stones and the wooden structure in the background.
+    </p>
+    <br>
+
+    <p>
+        One interesting one is Icon, revisited.
+        I performed Gamma correction on each color channel, so the relationship between different colors must not have been
+        preserved through this transformation. Take a look at the following.
+    </p>
+
+<table>
+    <tr>
+    <td>
+        <img src="media/icon.jpg" width="300" height="300" alt="Icon Full">
+        <figcaption>Icon original</figcaption>
+    </td>
+    <td>
+    <img src="media/icon_blue.jpg" width="300" height="300" alt="three_generations">
+    <figcaption>Icon contrast</figcaption> 
+    </td>  
+</tr>
+</table>
+
+    <p>
+        You can see that the new image appears to have a blue filter over it. You can actually see this by printing the average pixel intensity
+        in the blue channel:
+        <br>
+        0.35710825523766937
+        <br>
+        I deliberately tuned the algorithm to intensity low-intensity channels. Since this image has a lack of "blue" (most
+        colors tend to be red and yellow), it will actually appear more "blue" due to the correction.
+    </p>
+
 </body>
 </html>
