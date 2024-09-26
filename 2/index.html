@@ -12,6 +12,11 @@
 <body>
     <h1>Project 2</h1>
     <h2>1 Fun with Filters</h2>
+    <p>
+        Gradient magnitude gives us how steep the change in intensity across pixels are. So the higher the gradient magnitude, 
+        the more likely it lies on a real-life border, such as delineating the outline of an object. So if we identify regions
+        with large such changes and filter out ones based on a threshold, they are more likely to be on edges of some shape. We'll try using this technique on the cameraman image.
+    </p>
     <img src="media/cameraman.png" width="300" alt="Cameraman">
     <p>
         Let's try to compute the gradient magnitude image. First, we have to get the partial derivative in x and y.
@@ -30,6 +35,9 @@
     </tr>
     </table>
     <p>
+        As we expected, the x-gradient reveals all vertical edges. This makes sense because if we detect change across the x-axis direction, it means the dividing line
+        is a vertical line. Vice versa for the y-gradient.
+    </p><p>
         Now to combine these two into a gradient magnitude.
         We can compute as the norm of each pixel in the x- and y-gradients.
         This is sqrt(x^2 + y^2) (arithmetic done entry-wise).
