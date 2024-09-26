@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Project 2</h1>
+    <h2>1 Fun with Filters</h2>
+    <img src="media/cameraman.png" width="300" alt="Cameraman">
+    <p>
+        Let's try to compute the gradient magnitude image. First, we have to get the partial derivative in x and y.
+        This can be done by convolving with the finite difference operators, which are D_x = [1, -1] and D_y [[1], [-1]] for the x and y directions respectively.
+    </p>
+    <table>
+        <tr>
+            <td>
+        <img src="media/camerax.png" width="300" alt="Camx">
+        <figcaption>Cameraman, x-gradient</figcaption>
+        </td>
+        <td>
+        <img src="media/cameray.png"  width="300" alt="camy">
+        <figcaption>Cameraman, y-gradient</figcaption>
+        </td>
+    </tr>
+    </table>
+    <p>
+        Now to combine these two into a gradient magnitude.
+        We can compute as the norm of each pixel in the x- and y-gradients.
+        This is sqrt(x^2 + y^2) (arithmetic done entry-wise).
+        We can binarize this by setting a threshold (i.e. alpha = 0.10), where all pixels above the value are rounded up to 1, or else are rounded down to 0.
+    </p>
+    <table>
+        <tr>
+            <td>
+        <img src="media/camera_conv_nonbinary.png" width="300" alt="Camx">
+        <figcaption>Cameraman, gradient magnitude</figcaption>
+        </td>
+        <td>
+            <img src="media/camera_conv.png" width="300" alt="Cameraman">
+        <figcaption>Cameraman, gradient magnitude binarized</figcaption>
+        </td>
+    </tr>
+    </table>
+    
+
+    <p>
+        Now it's time to get rid of the noise with the DoG filter. First, we can try convolving the image with the Gaussian kernel and computing the gradient magnitude.
+        We can convolve the finite difference filter with the Gaussian and see we get the same result.
+    </p>
+
+    <table>
+        <tr>
+            <td>
+    <img src="media/g1.png" width="300" alt="gaus">
+    <figcaption>Gaussian and convolve</figcaption> 
+</td>
+<td>
+    <img src="media/g2.png" width="300"  alt="gaus">
+    <figcaption>DoG</figcaption> 
+</td>
+</tr>
+</table>
+
+<p>
+    These are a lot less noisy. You can also see that the outline of the cameraman is a lot more pronounced and recognizable, not to mention that it appears
+    to be a set of continuous lines, instead of choppy discrete lines. It also captures all edges that have "weaker" edges, such as the cameraman's back leg.
+    We can confirm that the results are identical and that convolution is associative.
+    Namely: (img * gaussian) * (D_x) = (img) * (gaussian * D_x)
+</p>
+
+<h2>2 Fun with Frequencies</h2>
+
+<h3>2.1 Image sharpening </h3>
+<p>
+    Let's try sharpening an image. We'll put it through a low pass filter and subtract the result to strengthen high frequencies. For example:
+</p>
+
+<table>
+    <tr>
+        <td>
+<img src="media/taj.jpg" width="300" alt="gaus">
+<figcaption>Blurry Taj</figcaption> 
+</td>
+<td>
+<img src="media/taj_sharp2.png" width="300" alt="gaus">
+<figcaption>Sharp Taj</figcaption> 
+</td>
+</tr>
+</table>
+
+<p>
+    It works on the Taj Mahal, but as a sanity check let's try a photo of Berkeley.
+    (Ignore the small grey bubble at the bottom left. This is a screenshot of some image that I didn't want to pay for.)
+</p>
+<table>
+
+    <tr>
+        <td>
+<img src="media/berk.png" width="300" alt="gaus">
+<figcaption>Blurry Berkeley</figcaption> 
+</td>
+<td>
+<img src="media/berk_sharp.png" width="300" alt="gaus">
+<figcaption>Sharp Berkeley</figcaption> 
+</td>
+</tr>
+</table>
+<p>
+    This looks good. Let's try it on the golden gate bridge. We'll first blur the original image and try to sharpen it.
+</p>
+
+<table>
+    <tr>
+        <td>
+<img src="media/golden-gate.jpg" width="300" alt="gaus">
+<figcaption>Original Golden Gate Bridge</figcaption> 
+</td>
+<td>
+<img src="media/goldengate_blur.png" width="300" alt="gaus">
+<figcaption>Blurred Golden Gate Bridge</figcaption> 
+</td>
+<td>
+    <img src="media/goldengate_sharp.png" width="300" alt="gaus">
+    <figcaption>Blurred Golden Gate Bridge</figcaption> 
+    </td>
+</tr>
+</table>
+
+<p>
+    Now note that the re-sharpened image isn't identical to the original image.
+    From the blurring, we actually lost information. We cannot retrieve the original information by emphasizing high frequencies.
+    One detail is that the "lines" that are almost overlapping but clearly distinguishable in the original image
+    lose significant detail in the re-sharpened image. Particularly on the right side, they seem to be completely overlapping at times.  
+    If you zoom in far enough, you will also see that the details of the passing cars are far less noticeable. Finally,
+    the movement of the water beneath seem unnatural, suggesting a rather rough texture rather than a smooth one.
+</p>
+
+
+<h3>2.2 Hybrid images</h3>
+    <p>
+
+    </p>
+
+    <table>
+        <tr>
+            <td>
+    <img src="media/DerekPicture.jpg" width="300" alt="gaus">
+    <figcaption>Derek</figcaption> 
+    </td>
+    <td>
+    <img src="media/nutmeg.jpg" width="300" alt="gaus">
+    <figcaption>Nutmeg</figcaption> 
+    </td>
+    <td>
+        <img src="media/dereknutmeg2.png" width="300" alt="gaus">
+        <figcaption>Derek Nutmeg</figcaption> 
+        </td>
+    </tr>
+    </table>
+    <p>
+        Here's the log magnitude of the FFT.
+    </p>
+
+    <table>
+        <tr>
+            <td>
+    <img src="media/derek_fft.png" width="300" alt="gaus">
+    <figcaption>Derek FFT</figcaption> 
+    </td>
+    <td>
+    <img src="media/nutmeg_fft.png" width="300" alt="gaus">
+    <figcaption>Nutmeg FFT</figcaption> 
+    </td>
+    <td>
+        <img src="media/hybrid_fft.png" width="300" alt="gaus">
+        <figcaption>Derek Nutmeg FFT</figcaption> 
+        </td>
+    </tr>
+    </table>
+
+    <p>
+        Let's try this on a couple more images.
+    </p>
+    <table>
+        <tr>
+            <td>
+    <img src="media/sf_new.jpg" width="300" alt="gaus">
+    <figcaption>San Francisco 2003</figcaption> 
+    </td>
+    <td>
+    <img src="media/sf_old.jpg" width="300" alt="gaus">
+    <figcaption>San Francisco 1993</figcaption> 
+    </td>
+    <td>
+        <img src="media/sf_combined2.png" width="300" alt="gaus">
+        <figcaption>San Francisco new and old</figcaption> 
+        </td>
+    </tr>
+    </table>
+
+    <table>
+        <tr>
+            <td>
+    <img src="media/sriram.jpeg" width="300" alt="gaus">
+    <figcaption>Sriram from CS 162</figcaption> 
+    </td>
+    <td>
+    <img src="media/300px-Ion_Stoica.jpg" height="300" alt="gaus">
+    <figcaption>Professor Ion</figcaption> 
+    </td>
+    <td>
+        <img src="media/sriion.png" height="300" alt="gaus">
+        <figcaption>Sriion</figcaption> 
+        </td>
+    </tr>
+    </table>
+
+    <p>
+        However, combining President Biden and VP Harris doesn't work as well:
+    </p>
+    <table>
+        <tr>
+            <td>
+    <img src="media/biden.png" height="300" alt="gaus">
+    <figcaption>President Biden</figcaption> 
+    </td>
+    <td>
+    <img src="media/harris.png" height="300" alt="gaus">
+    <figcaption>VP Harris</figcaption> 
+    </td>
+    <td>
+        <img src="media/biden_harris.png" height="300" alt="gaus">
+        <figcaption>Biden Harris</figcaption> 
+        </td>
+    </tr>
+    </table>
+    <p>
+        Their facial features overlap a lot, so the high frequency and the low frequency in the image blend together. But if you move far away enough, you can catch a glimpse of VP Harris.
+    </p>
+
+<h3>2.3 Gaussian and Laplacian Stacks</h3>
+
+<p>
+    Here's a recreation of the Laplacian stacks.
+    The layers represent the 0th, 2nd, and 4th levels in this order.
+</p>
+
+
+<table>
+    <tr>
+        <td>
+<img src="media/apple0.png" height="100" alt="gaus">
+</td>
+<td>
+<img src="media/orange0.png" height="100" alt="gaus">
+</td>
+<td>
+    <img src="media/orapple0.png" height="100" alt="gaus">
+    </td>
+</tr>
+</table>
+<table>
+    <tr>
+        <td>
+<img src="media/apple2.png" height="100" alt="gaus"> 
+</td>
+<td>
+<img src="media/orange2.png" height="100" alt="gaus"> 
+</td>
+<td>
+    <img src="media/orapple2.png" height="100" alt="gaus">
+    </td>
+</tr>
+</table>
+<table>
+    <tr>
+        <td>
+<img src="media/apple4.png" height="100" alt="gaus">
+</td>
+<td>
+<img src="media/orange4.png" height="100" alt="gaus">
+</td>
+<td>
+    <img src="media/orapple4.png" height="100" alt="gaus">
+    </td>
+</tr>
+</table>
+
+<h3>2.4 Multiresolution blending</h3>
+
+<p>
+    Now finally, the Orapple.
+</p>
+
+<img src="media/orapple.png" height="300" alt="gaus">
+
+<p>
+But I think we can make something far more interesting. We know there are bicolor cats. But can we create one with computers?
+</p>
+
+<table>
+    <tr>
+        <td>
+<img src="media/blackcat.png" height="300" alt="gaus">
+</td>
+<td>
+<img src="media/orangecat.png" height="300" alt="gaus">
+</td>
+<td>
+    <img src="media/hybrid_cat.png" height="300" alt="gaus">
+    </td>
+</tr>
+</table>
+
+<p>
+    We can indeed. The alignment is a little off due to the nature of the tilt on the black cat's head, but this looks good.
+</p>
+
+<p>
+We can actually generalize this masking process. We can have any 2D array of 1s and 0s, corresponding to
+portions of the images that we want to mask out.
+</p>
+
+<table>
+    <tr>
+        <td>
+<img src="media/titanic.png" height="300" alt="gaus">
+</td>
+<td>
+<img src="media/bush_side.png" height="300" alt="gaus">
+</td>
+</tr>
+</table>
+
+<p>
+    Now let's make a mask for the face.
+</p>
+
+<img src="media/mask.png" height="300" alt="gaus">
+<figcaption>Mask used</figcaption> 
+
+<p>
+    The final result:
+</p>
+
+<img src="media/bush_titanic.png" height="300" alt="gaus">
+
+
+<p>
+    This beautiful scene from the movie Titanic has been enhanced by former president George W. Bush.
+    Technology is great.
+</p>
