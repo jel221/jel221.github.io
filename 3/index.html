@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Project 3</h1>
+    <h2>1 Defining Correspondences</h2>
+    <p>
+        Let's try morphing my face and Brad Pitt's face. We'll first by defining the points for key features:
+    </p>
+    <table>
+        <tr>
+            <td>
+        <img src="media/jacob_dot.png" width="200" alt="Camx">
+        </td>
+        <td>
+        <img src="media/brad_dot.png"  width="200" alt="camy">
+        </td>
+    </tr>
+    </table>
+    <p>
+        The Delaunay triangulation of the average of these points gives us the following:
+    </p>
+    <table>
+        <tr>
+            <td>
+        <img src="media/jacob_tri.png" width="200" alt="Camx">
+        </td>
+        <td>
+        <img src="media/brad_tri.png"  width="200" alt="camy">
+        </td>
+    </tr>
+    </table>
+
+    <h2>2 Computing the "Mid-Way Face"</h2>
+    Let's look at the final result of morphing the two faces at the middle.
+    <table>
+        <tr>
+            <td>
+        <img src="media/jacob-3.png" width="200" alt="Camx">
+        </td>
+        <td>
+        <img src="media/brad.png"  width="200" alt="camy">
+        </td>
+        <td>
+        <img src="media/jacob_brad_morph.png"  width="200" alt="camy">
+        </td>
+    </tr>
+    </table>
+    <p>
+        We notice some relics on the edges. This is because the orientation of Brad's face is a tiny bit off, since he's tilting his head to the side.
+        Let's try this on a couple more images.
+    </p>
+    <table>
+        <tr>
+            <td>
+        <img src="media/george_small.jpg" width="200" alt="Camx">
+        </td>
+        <td>
+        <img src="media/keanu.jpg"  width="200" alt="camy">
+        </td>
+        <td>
+        <img src="media/keanu_george.png"  width="200" alt="camy">
+        </td>
+    </tr>
+    </table>
+    <p>
+        If the corresponding facial features are situated similarly for both faces, the morphing does look far better.
+    </p>
+
+    <h2>3 The Morph sequence</h2>
+    <p>
+        Let's make an animation that gradually morphs two faces into each other!
+    </p>
+    <table>
+        <tr>
+        <td>
+        <img src="media/jacob_brad.gif" width="200" alt="Camx">
+        </td>
+        <td>
+        <img src="media/keanu_george.gif"  width="200" alt="camy">
+        </td>
+    </tr>
+    </table>
+    <p>
+        This looks good. 
+    </p>
+    <h2>4 The "Mean face" of a population</h2>
+    <p>
+        Now let's first compute the "mean" face of a set of 100 Brazilian individuals:
+    </p>
+    <img src="media/meanface.png" width="200" alt="Cameraman">
+    <p>
+        Now let's see if we can try to make someone more "average". We'll choose this individual here.
+    </p>
+    <img src="media/7a.jpg" width="200" alt="Cameraman">
+    <p>
+        The morph sequence, the midpoint, and the warp:
+    </p>
+    <table>
+        <tr>
+            <td>
+        <img src="media/7a_morph_mean.gif" width="200" alt="Camx">
+        <figcaption> Full morph</figcaption>
+        </td>
+        <td>
+        <img src="media/7a_morphed.png"  width="200" alt="camy">
+        <figcaption> Dissolve</figcaption>
+        </td>
+        <td>
+            <img src="media/7a_geom.png"  width="200" alt="camy">
+            <figcaption> Only warp </figcaption>
+        </td>
+    </tr>
+    </table>
+    <p>
+        This looks reasonable. Let's do a couple more.
+    </p>
+    <table>
+        <tr>
+        <td>
+        <img src="media/27a.jpg" width="200" alt="Camx">
+        <figcaption> Original</figcaption>
+        </td>
+            <td>
+        <img src="media/27a_morph_mean.gif" width="200" alt="Camx">
+        <figcaption> Full morph</figcaption>
+        </td>
+        <td>
+        <img src="media/27a_morph25.png"  width="200" alt="camy">
+        <figcaption> Dissolve </figcaption>
+        </td>
+        <td>
+            <img src="media/27a_geom.png"  width="200" alt="camy">
+            <figcaption> Only warp</figcaption>
+        </td>
+    </tr>
+    </table>
+    <table>
+        <tr>
+            <td>
+                <img src="media/39a.jpg" width="200" alt="Camx">
+                <figcaption> Original</figcaption>
+                </td>
+            <td>
+        <img src="media/39a_morph_mean.gif" width="200" alt="Camx">
+        <figcaption> Full morph</figcaption>
+        </td>
+        <td>
+        <img src="media/39a_morph25.png"  width="200" alt="camy">
+        <figcaption> Dissolve </figcaption>
+        </td>
+        <td>
+            <img src="media/39a_geom.png"  width="200" alt="camy">
+            <figcaption> Only warp</figcaption>
+        </td>
+    </tr>
+    </table>
+<p>
+    We can also see what I'd look like if I was a bit more Brazilian by warping the shape!
+    On the right, we have also done the inverse, where the mean Brazilian face was warped to my geometry.
+</p>
+<table>
+    <tr>
+        <td>
+            <img src="media/jacob-2.png" width="200" alt="Camx">
+            </td>
+        <td>
+    <img src="media/self_to_mean.png" width="200" alt="Camx">
+    </td>
+    <td>
+    <img src="media/mean_to_self.png"  width="200" alt="camy">
+    </td>
+</tr>
+</table>
+
+    <h2>5 Caricatures: Extrapolating from the mean</h2>
+    <p>
+        Now I can "subtract" the population mean from my face to create a caricature.
+        In particular, I chose the mean face of Korean men to fit my demographic.
+    </p>
+    <table>
+        <tr>
+            <td>
+        <img src="media/jacob-2.png" width="200" alt="Camx">
+        </td>
+        <td>
+        <img src="media/avg_korean.jpg"  width="200" alt="camy">
+        </td>
+        <td>
+        <img src="media/shape.png"  width="200" alt="camy">
+        </td>
+    </tr>
+    </table>
+    <p>
+        As you can see, the features that deviate significantly from the mean are emphasized.
+        In particular, the slope on my eyebrows are far more steep. It also grew the width of my nose and eyes.
+        Overall it exaggerates the asymmetry on my face (such as the sizes of my eyes), since the population mean will tend to be very symmetric.
+    </p>
+
+    <h2>6 Bells and whistles</h2>
+    <p>
+    I'm not a big fan of my original photo! I'll make some changes.
+</p>
+<p>
+    First, let's try to turn myself into a woman. I'll get the mean Korean female face and morph it into mine.
+</p>
+<table>
+    <tr>
+        <td>
+            <img src="media/jacob-3.png" width="200" alt="Camx">
+            </td>
+        <td>
+    <img src="media/avg_korean_woman.jpg" width="200" alt="Camx">
+    </td>
+    <td>
+    <img src="media/jacob-female.png"  width="200" alt="camy">
+    </td>
+</tr>
+</table>
+<p>
+    It's actually pretty difficult to give myself more feminine features while retaining my original appearance.
+</p>
+<p>
+    Unfortunately I've already applied some ethnicity-changing transformations in my previous example. So I'll try to change my facial expressions a bit. I would prefer to be smiling in this photo.
+</p>
+<table>
+    <tr>
+        <td>
+            <img src="media/jacob-3.png" width="200" alt="Camx">
+            </td>
+        <td>
+    <img src="media/avg_smile.png" width="200" alt="Camx">
+    </td>
+    <td>
+    <img src="media/smile.png"  width="200" alt="camy">
+    </td>
+</tr>
+</table>
+<p>
+Unfortunately, this is the averaged smile of UK Parliament members, so it isn't a population mean. It is predominantly Anglo-Saxon and warps my face in a way that doesn't preserve my original features.
+</p>
+<p>
+    What I can do is use another image of myself to warp my face.
+</p>
+<img src="media/jacob_wow.JPG" width="200" alt="Camx">
+<p>
+    This is a photo of myself doing a joking "wow" expression a few years ago. (After the big game win!)
+</p>
+
+<table>
+    <tr>
+        <td>
+            <img src="media/jacob-3.png" width="200" alt="Camx">
+            <figcaption> Original </figcaption>
+            </td>
+        <td>
+    <img src="media/jacob_wow.JPG" width="200" alt="Camx">
+    <figcaption> Target </figcaption>
+    </td>
+    <td>
+    <img src="media/wow_morph.png"  width="200" alt="camy">
+    <figcaption> Only warp </figcaption>
+    </td>
+</tr>
+</table>
+
+<p>
+    But now my mouth is just stretched vertically! Time to dissolve more of the new photo.
+</p>
+    <img src="media/wow_dissolve.png"  width="200" alt="camy">
+    <figcaption> Warp + blend </figcaption>
+
+    <p>
+        This is the desired result. Great to see more expression in my photo!
+    </p>
