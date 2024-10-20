@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Project 4A</h1>
+    <h2>Shoot the Pictures</h2>
+    Here are some photos used for the mosaic.
+    <table>
+        <tr>
+            <td>
+        <img src="media/moffitt_1.png" width="200" alt="Camx">
+        </td>
+        <td>
+        <img src="media/moffitt_2.png"  width="200" alt="camy">
+        </td>
+        <td>
+            <img src="media/moffitt_3.png"  width="200" alt="camy">
+            </td>
+    </tr>
+    </table>
+
+    <table>
+        <tr>
+            <td>
+        <img src="media/1.png" width="200" alt="Camx">
+        </td>
+        <td>
+        <img src="media/2.png"  width="200" alt="camy">
+        </td>
+        <td>
+            <img src="media/3.png"  width="200" alt="camy">
+            </td>
+    </tr>
+    </table>
+
+    <table>
+        <tr>
+            <td>
+        <img src="media/left.png" width="200" alt="Camx">
+        </td>
+        <td>
+        <img src="media/mid.png"  width="200" alt="camy">
+        </td>
+        <td>
+            <img src="media/right.png"  width="200" alt="camy">
+            </td>
+    </tr>
+    </table>
+
+    <h2>Recover Homographies</h2>
+    <p>
+        How do we recover homographies? 
+    </p>
+    <p>
+        By definition, it is the matrix H, taken from lecture:
+    </p>
+    
+
+    <img src="media/lecture.png"  width="200" alt="camy">
+    <p>
+    If we fix the bottom right element to be 1, it turns out we can solve for the matrix's elements with the following equation:
+</p>
+    <img src="media/eq.png"  width="500" alt="camy">
+
+    <h2>Image Rectification</h2>
+    Let's try rectifying an image. This is an example image of a sign from Moffitt.
+    <table>
+        <tr>
+            <td>
+        <img src="media/front_poster.png" width="200" alt="Camx">
+        <figcaption>Original</figcaption>
+        </td>
+        <td>
+        <img src="media/angled_poster.png"  width="200" alt="camy">
+        <figcaption>Angled</figcaption>
+        </td>
+    </tr>
+    </table>
+    <p>We can define the point correspondences using the original, front-facing image. Then, we'll use the homography
+        to warp the angled image to the rectangle.
+    </p>
+    <img src="media/poster_warped.png"  width="200" alt="camy">
+    <p>
+       This sanity check lets us know that our transformation works as intended!
+    </p>
+    
+    <p>
+        Let's just do one more to be extra sure.
+    </p>
+
+    <table>
+        <tr>
+            <td>
+        <img src="media/straight.png" width="200" alt="Camx">
+        <figcaption>Original</figcaption>
+        </td>
+        <td>
+        <img src="media/slanted.png"  width="200" alt="camy">
+        <figcaption>Angled</figcaption>
+        </td>
+        <td>
+            <img src="media/straightened.png"  width="200" alt="camy">
+    <figcaption>Recovered from the latter</figcaption>
+        </td>
+    </tr>
+    </table>
+    <p>
+        The only reason why this is not perfectly rectangular is because of the way I selected the corner points in the slanted image.
+        Even if I hardcode the corners in the target warp to be a perfect rectangle as such, it still fails to be a precise rectangle.
+        Unfortunately it's very difficult for me to be that precise, so I'll just leave it at that.
+    </p>
+    
+    <h2>Blend the images into a mosaic </h2>
+
+    <img src="media/room_pan.png"  width="500" alt="camy">
+    <p> This is a panorama of my room. </p>
+
+    <img src="media/porch_pan.png"  width="500" alt="camy">
+    <p> This is a panorama of the porch. </p>
+
+    <img src="media/moffitt_pan.png"  width="500" alt="camy">
+    <p> This is a panorama of Moffitt at night, including the cafe building on the right that is covered up. </p>
+    <p> 
+        Now I have to admit that the image quality gets progressively worse on the right.
+        This is because I progressively added the photos on the left, and with forward warping the frequency on the right pixels gradually became lower.
+    </p>
